@@ -13,18 +13,13 @@ type XDeployment struct {
 }
 
 type XDeploymentSpec struct {
-	Image    string   `json:"image" required:"true"`
-	Port     int      `json:"port,omitempty"`
-	Hostname string   `json:"hostname,omitempty"`
-	Env      []EnvVar `json:"env,omitempty"`
+	Image    string            `json:"image" required:"true"`
+	Replicas *int32            `json:"replicas,omitempty"`
+	Port     *int              `json:"port,omitempty"`
+	Hostname string            `json:"hostname,omitempty"`
+	Env      map[string]string `json:"env,omitempty"`
 }
 
 type XDeploymentStatus struct {
-	Replicas int    `json:"replicas,omitempty"`
-	Address  string `json:"address,omitempty"`
-}
-
-type EnvVar struct {
-	Name  string `json:"name"`
-	Value string `json:"value"`
+	Replicas int `json:"replicas,omitempty"`
 }
