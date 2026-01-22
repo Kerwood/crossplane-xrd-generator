@@ -26,6 +26,6 @@ type XExampleStatus struct {
 }
 
 type SomeStruct struct {
-	FieldOne string `json:"fieldOne" required:"true"`
-	FieldTwo string `json:"fieldTwo" required:"true"`
+	FieldOne string `json:"fieldOne,omitempty"`
+	FieldTwo string `json:"fieldTwo,omitempty"`
 }
