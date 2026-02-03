@@ -7,6 +7,7 @@ import (
 	"reflect"
 
 	"github.com/kerwood/crossplane-xrd-generator/generator"
+	"github.com/kerwood/crossplane-xrd-generator/resources/xappregistration"
 	"github.com/kerwood/crossplane-xrd-generator/resources/xdeployment"
 	"xrd-example/resources/xexample"
 )
@@ -18,6 +19,10 @@ var xResources = map[string]generator.ResourceMeta{
 	},
 	"xdeployment": {
 		Type:  reflect.TypeOf(xdeployment.XDeployment{}),
+		Group: "example.org",
+	},
+	"xappregistration": {
+		Type:  reflect.TypeOf(xappregistration.XAppRegistration{}),
 		Group: "example.org",
 	},
 }
