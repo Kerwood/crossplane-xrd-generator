@@ -8,7 +8,7 @@ require (
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
 
-require github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260207120612-c08469550a11
+require github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260207121238-edf55624ca65
 
 require (
 	dario.cat/mergo v1.0.2 // indirect

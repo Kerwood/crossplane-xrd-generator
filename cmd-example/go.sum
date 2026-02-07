@@ -52,6 +52,8 @@ github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260204204237-31ee
 github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260204204237-31eeea8fbd47/go.mod h1:BRRJ1whzkJcKK2d7JLWOT+R/kGWoJZksZp+D1eBLFmc=
 github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260207120612-c08469550a11 h1:dcDfuGbBlkgVhb1U5VAFd00Nttcesun1A1dAtYrED/A=
 github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260207120612-c08469550a11/go.mod h1:BRRJ1whzkJcKK2d7JLWOT+R/kGWoJZksZp+D1eBLFmc=
+github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260207121238-edf55624ca65 h1:YpV+ENchquM+OIaGXGMJYX8K/oeKUfMz+zOZ9T/sYtE=
+github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260207121238-edf55624ca65/go.mod h1:BRRJ1whzkJcKK2d7JLWOT+R/kGWoJZksZp+D1eBLFmc=
 github.com/kisielk/errcheck v1.5.0/go.mod h1:pFxgyoBC7bSaBwPgfKdkLd5X25qrDl4LWUI2bnpBCr8=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
 github.com/kr/pretty v0.3.1 h1:flRD4NNwYAUpkphVc1HcthR4KEIFJ65n8Mw5qdRn3LE=
