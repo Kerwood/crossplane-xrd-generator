@@ -44,10 +44,14 @@ github.com/kerwood/crossplane-xrd-generator/generator v0.0.0-20260115183436-ee1e
 github.com/kerwood/crossplane-xrd-generator/generator v0.0.0-20260115183436-ee1e054ce511/go.mod h1:/ofHU1qHcHk3CqeajeFDTukNTYMw2XWOLnsgu1uMai4=
 github.com/kerwood/crossplane-xrd-generator/generator v0.0.0-20260204204237-31eeea8fbd47 h1:NtgdgPlEYCavFGu2vgJY2wz+8UMgwYmD+MDncQdF15o=
 github.com/kerwood/crossplane-xrd-generator/generator v0.0.0-20260204204237-31eeea8fbd47/go.mod h1:/ofHU1qHcHk3CqeajeFDTukNTYMw2XWOLnsgu1uMai4=
+github.com/kerwood/crossplane-xrd-generator/generator v0.0.0-20260207120612-c08469550a11 h1:uyK2lNOAM27vzWWfNRXbf78js+oTTcJI3V7eB2r2Yf4=
+github.com/kerwood/crossplane-xrd-generator/generator v0.0.0-20260207120612-c08469550a11/go.mod h1:/ofHU1qHcHk3CqeajeFDTukNTYMw2XWOLnsgu1uMai4=
 github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260203215029-0a34463235a8 h1:hMr/gz86WVEshFmny/e+O5ABUIaIoGcLILrY8ZMAXAw=
 github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260203215029-0a34463235a8/go.mod h1:BRRJ1whzkJcKK2d7JLWOT+R/kGWoJZksZp+D1eBLFmc=
 github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260204204237-31eeea8fbd47 h1:FQlYi80A6wvW+yKpgQJCK1nwtJ5e3LCPvu7RtpyStr8=
 github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260204204237-31eeea8fbd47/go.mod h1:BRRJ1whzkJcKK2d7JLWOT+R/kGWoJZksZp+D1eBLFmc=
+github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260207120612-c08469550a11 h1:dcDfuGbBlkgVhb1U5VAFd00Nttcesun1A1dAtYrED/A=
+github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260207120612-c08469550a11/go.mod h1:BRRJ1whzkJcKK2d7JLWOT+R/kGWoJZksZp+D1eBLFmc=
 github.com/kisielk/errcheck v1.5.0/go.mod h1:pFxgyoBC7bSaBwPgfKdkLd5X25qrDl4LWUI2bnpBCr8=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
 github.com/kr/pretty v0.3.1 h1:flRD4NNwYAUpkphVc1HcthR4KEIFJ65n8Mw5qdRn3LE=
