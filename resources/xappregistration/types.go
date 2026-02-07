@@ -13,9 +13,9 @@ type XAppRegistration struct {
 }
 
 type XAppRegistrationSpec struct {
-	RedirectURLs       []*string `json:"redirectURL,omitempty"`
+	RedirectURLs       []*string `json:"redirectURLs,omitempty"`
 	GroupAssignments   []*string `json:"groupAssignments,omitempty"`
-	ServiceAccountName string    `json:"serviceAcccountName"`
+	ServiceAccountName string    `json:"serviceAccountName"`
 }
 
 type XAppRegistrationStatus struct {
