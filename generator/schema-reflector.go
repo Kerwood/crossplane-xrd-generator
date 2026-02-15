@@ -42,12 +42,25 @@ func GoTypeToOpenAPISchema(t reflect.Type) extv1.JSONSchemaProps {
 	case reflect.Bool:
 		return extv1.JSONSchemaProps{Type: "boolean"}
 
+	case reflect.Ptr:
+		return GoTypeToOpenAPISchema(t.Elem())
+
 	case reflect.Slice:
 		elemSchema := GoTypeToOpenAPISchema(t.Elem())
 		return extv1.JSONSchemaProps{
 			Type: "array",
 			Items: &extv1.JSONSchemaPropsOrArray{
 				Schema: &elemSchema,
+			},
+		}
+
+	case reflect.Map:
+		valSchema := GoTypeToOpenAPISchema(t.Elem())
+		return extv1.JSONSchemaProps{
+			Type: "object",
+			AdditionalProperties: &extv1.JSONSchemaPropsOrBool{
+				Allows: true,
+				Schema: &valSchema,
 			},
 		}
 
