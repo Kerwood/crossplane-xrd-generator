@@ -3,12 +3,14 @@ module xrd-example
 go 1.24.11
 
 require (
-	github.com/kerwood/crossplane-xrd-generator/generator v0.0.0-20260215153921-b2b1f49287c2
 	k8s.io/apimachinery v0.34.1
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
 
-require github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260217140641-07e9972a2bd9
+require (
+	github.com/kerwood/crossplane-xrd-generator/generator v0.0.0-20260222132348-e79038f7646a
+	github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260217140641-07e9972a2bd9
+)
 
 require (
 	dario.cat/mergo v1.0.2 // indirect
