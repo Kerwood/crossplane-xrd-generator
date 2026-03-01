@@ -1,4 +1,4 @@
-module github.com/kerwood/crossplane-xrd-generator/resources/xdeployment
+module github.com/kerwood/crossplane-xrd-generator/resources/xappregistration
 
 go 1.25.0
 
