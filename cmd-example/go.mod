@@ -8,7 +8,7 @@ require (
 )
 
 require (
-	github.com/kerwood/crossplane-xrd-generator/generator v1.0.0
+	github.com/kerwood/crossplane-xrd-generator/generator v1.0.1-0.20260301121603-039c78271fda
 	github.com/kerwood/crossplane-xrd-generator/resources/xappregistration v1.0.1
 	github.com/kerwood/crossplane-xrd-generator/resources/xdeployment v1.0.0
 )
@@ -23,6 +23,7 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee // indirect
+	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	go.yaml.in/yaml/v2 v2.4.3 // indirect
 	golang.org/x/mod v0.31.0 // indirect
@@ -43,3 +44,9 @@ require (
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v6 v6.3.0 // indirect
 )
+
+// replace (
+// 	github.com/kerwood/crossplane-xrd-generator/generator => ../generator
+// 	github.com/kerwood/crossplane-xrd-generator/resources/xappregistration => ../resources/xappregistration
+// 	github.com/kerwood/crossplane-xrd-generator/resources/xdeployment => ../resources/xdeployment
+// )

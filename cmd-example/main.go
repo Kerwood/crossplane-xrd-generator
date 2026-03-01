@@ -10,7 +10,7 @@ import (
 
 var xResources = map[string]generator.ResourceMeta{
 	"xexample": {
-		PackagePath: "github.com/kerwood/crossplane-xrd-generator/cmd-example/resources/xexample",
+		PackagePath: "github.com/kerwood/crossplane-xrd-generator/resources/xexample",
 		TypeName:    "XExample",
 		Group:       "example.org",
 		Version:     "v1alpha1",
