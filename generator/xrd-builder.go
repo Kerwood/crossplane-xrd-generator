@@ -25,10 +25,30 @@ type ResourceMeta struct {
 	// e.g. "example.crossplane.io"
 	Group string
 
-	// Version defaults to "v1alpha1" if empty.
+	// Version is the API version for the XRD. Defaults to "v1alpha1" if empty.
 	Version string
 }
 
+// BuildCompositeResourceDefinition generates a Crossplane CompositeResourceDefinition
+// from a Go struct definition and its kubebuilder marker annotations.
+//
+// It loads the Go package at ResourceMeta.PackagePath, extracts the OpenAPI v3 schema
+// for the type named ResourceMeta.TypeName using controller-tools, and wraps it in a
+// fully populated CompositeResourceDefinition ready to be marshalled to YAML.
+//
+// The XRD is configured as follows:
+//   - apiVersion: apiextensions.crossplane.io/v2
+//   - scope: Namespaced
+//   - a single version entry with Served and Referenceable set to true
+//   - metadata.name follows the Kubernetes convention: <plural>.<group>
+//   - plural is derived by lowercasing the type name and appending "s"
+//
+// Only the spec properties from the generated schema are included in the XRD.
+// The status and metadata fields are intentionally omitted as Crossplane manages
+// those automatically.
+//
+// Returns an error if the package cannot be loaded, the type is not found,
+// or the schema cannot be marshalled.
 func BuildCompositeResourceDefinition(resource ResourceMeta) (*apiextensionsv2.CompositeResourceDefinition, error) {
 	version := resource.Version
 	if version == "" {
