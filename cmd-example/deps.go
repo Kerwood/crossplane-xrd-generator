@@ -1,9 +1,8 @@
-//go:build tools
-
 package main
 
 import (
-	_ "github.com/kerwood/crossplane-xrd-generator/cmd-example/resources/xexample"
+	// Import resource packages to ensure they appear in build info
+	// so the schema extractor can locate them in the module cache.
 	_ "github.com/kerwood/crossplane-xrd-generator/resources/xappregistration"
 	_ "github.com/kerwood/crossplane-xrd-generator/resources/xdeployment"
 )
