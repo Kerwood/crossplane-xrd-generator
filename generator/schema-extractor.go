@@ -7,6 +7,7 @@ import (
 	"runtime/debug"
 	"strings"
 
+	"golang.org/x/mod/modfile"
 	"golang.org/x/tools/go/packages"
 	extv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"sigs.k8s.io/controller-tools/pkg/crd"
@@ -14,57 +15,106 @@ import (
 	"sigs.k8s.io/controller-tools/pkg/markers"
 )
 
-// findModuleDir locates the source directory for a package by reading the
-// build info embedded in the binary and finding the module in the module cache.
+// findModuleDir resolves the on-disk source directory for a given Go package path.
+//
+// It uses three strategies in order:
+//
+//  1. Build info — reads the module list embedded in the binary at compile time
+//     via debug.ReadBuildInfo. For modules with a replace directive, the local
+//     replacement path is resolved to an absolute path. For versioned modules,
+//     the path is constructed from the module cache.
+//
+//  2. go.mod replace directives — for modules replaced with local paths that
+//     do not appear in build info (e.g. because they were excluded by the linker),
+//     the go.mod file in the current working directory is parsed directly.
+//
+//  3. go.mod require directives — for any remaining modules not matched by the
+//     above, the version is read from go.mod and the module cache path is
+//     constructed as $GOMODCACHE/<module>@<version>.
+//
+// The module cache defaults to $GOMODCACHE if set, otherwise ~/go/pkg/mod.
 func findModuleDir(packagePath string) (string, error) {
+	// First try build info for versioned modules
 	bi, ok := debug.ReadBuildInfo()
-	if !ok {
-		return "", fmt.Errorf("build info not available")
+	if ok {
+		for _, mod := range bi.Deps {
+			if mod == nil || !strings.HasPrefix(packagePath, mod.Path) {
+				continue
+			}
+			if mod.Replace != nil {
+				subPath := strings.TrimPrefix(packagePath, mod.Path)
+				absPath, err := filepath.Abs(mod.Replace.Path)
+				if err != nil {
+					return "", fmt.Errorf("resolving replace path: %w", err)
+				}
+				return filepath.Join(absPath, subPath), nil
+			}
+			if mod.Version != "" && mod.Version != "(devel)" {
+				gomodcache := os.Getenv("GOMODCACHE")
+				if gomodcache == "" {
+					home, _ := os.UserHomeDir()
+					gomodcache = filepath.Join(home, "go", "pkg", "mod")
+				}
+				return filepath.Join(gomodcache, mod.Path+"@"+mod.Version), nil
+			}
+		}
 	}
 
+	// Fall back to parsing go.mod directly for replaced modules
+	gomodBytes, err := os.ReadFile("go.mod")
+	if err != nil {
+		return "", fmt.Errorf("reading go.mod: %w", err)
+	}
+
+	mf, err := modfile.Parse("go.mod", gomodBytes, nil)
+	if err != nil {
+		return "", fmt.Errorf("parsing go.mod: %w", err)
+	}
+
+	for _, r := range mf.Replace {
+		if !strings.HasPrefix(packagePath, r.Old.Path) {
+			continue
+		}
+		subPath := strings.TrimPrefix(packagePath, r.Old.Path)
+		absPath, err := filepath.Abs(r.New.Path)
+		if err != nil {
+			return "", fmt.Errorf("resolving replace path: %w", err)
+		}
+		return filepath.Join(absPath, subPath), nil
+	}
+
+	// Check require directives for module cache lookup
 	gomodcache := os.Getenv("GOMODCACHE")
 	if gomodcache == "" {
-		gopath := os.Getenv("GOPATH")
-		if gopath == "" {
-			home, err := os.UserHomeDir()
-			if err != nil {
-				return "", fmt.Errorf("could not determine home directory: %w", err)
-			}
-			gopath = filepath.Join(home, "go")
-		}
-		gomodcache = filepath.Join(gopath, "pkg", "mod")
+		home, _ := os.UserHomeDir()
+		gomodcache = filepath.Join(home, "go", "pkg", "mod")
 	}
 
-	// Include the main module itself in the search
-	allMods := append(bi.Deps, &debug.Module{
-		Path:    bi.Main.Path,
-		Version: bi.Main.Version,
-	})
-
-	for _, mod := range allMods {
-		if mod == nil || !strings.HasPrefix(packagePath, mod.Path) {
+	for _, r := range mf.Require {
+		if !strings.HasPrefix(packagePath, r.Mod.Path) {
 			continue
 		}
-
-		// Handle local replace directives
-		if mod.Replace != nil {
-			subPath := strings.TrimPrefix(packagePath, mod.Path)
-			return filepath.Join(mod.Replace.Path, subPath), nil
-		}
-
-		version := mod.Version
-		if version == "" || version == "(devel)" {
-			continue
-		}
-
-		// Module cache path format: $GOMODCACHE/module@version
-		moduleDir := filepath.Join(gomodcache, mod.Path+"@"+version)
-		return moduleDir, nil
+		return filepath.Join(gomodcache, r.Mod.Path+"@"+r.Mod.Version), nil
 	}
 
-	return "", fmt.Errorf("could not find module directory for package %q — is it a dependency?", packagePath)
+	return "", fmt.Errorf("could not find module directory for package %q", packagePath)
 }
 
+// ExtractOpenAPISchema parses a Go package by import path and returns a fully
+// flattened OpenAPI v3 JSONSchemaProps for the named type.
+//
+// It uses controller-tools to walk the package's AST, collect kubebuilder
+// marker comments (e.g. +kubebuilder:validation:Minimum, +kubebuilder:default),
+// and generate a schema that reflects both the struct field types and any
+// validation constraints defined via markers.
+//
+// The returned schema has all $ref pointers resolved and allOf wrappers removed,
+// making it suitable for direct embedding in a Crossplane XRD or Kubernetes CRD
+// without further processing.
+//
+// packagePath is the full Go import path, e.g.
+// "github.com/yourorg/yourrepo/resources/xdeployment".
+// typeName is the root struct name to generate the schema for, e.g. "XDeployment".
 func ExtractOpenAPISchema(packagePath, typeName string) (*extv1.JSONSchemaProps, error) {
 	moduleDir, err := findModuleDir(packagePath)
 	if err != nil {
