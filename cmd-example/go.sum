@@ -68,6 +68,16 @@ github.com/josharian/intern v1.0.0 h1:vlS4z54oSdjm0bgjRigI+G1HpF+tI+9rE5LLzOg8Hm
 github.com/josharian/intern v1.0.0/go.mod h1:5DoeVV0s6jJacbCEi61lwdGj/aVlrQvzHFFd8Hwg//Y=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
 github.com/json-iterator/go v1.1.12/go.mod h1:e30LSqwooZae/UwlEbR2852Gd8hjQvJoHmT4TnhNGBo=
+github.com/kerwood/crossplane-xrd-generator/generator v1.0.1 h1:i2raoehRfvll+Mv7BvTvXUN1w+gD2tOwMexYNOQVahg=
+github.com/kerwood/crossplane-xrd-generator/generator v1.0.1/go.mod h1:kd8vioKvxDWTCb5rtpsI3T9j526QwP6bFn6Zl8S3izA=
+github.com/kerwood/crossplane-xrd-generator/generator v1.0.2 h1:FzWSPdtHrsT+XitYt9TCWOd6N4UUiSeFKWEpBCBfRfA=
+github.com/kerwood/crossplane-xrd-generator/generator v1.0.2/go.mod h1:kd8vioKvxDWTCb5rtpsI3T9j526QwP6bFn6Zl8S3izA=
+github.com/kerwood/crossplane-xrd-generator/resources/xappregistration v1.0.1 h1:68wG1YXvv9mOuQ1uz/mjA/WH2VdpM0PFNoPWdORxqcE=
+github.com/kerwood/crossplane-xrd-generator/resources/xappregistration v1.0.1/go.mod h1:Ohj1/d5Hr0QwCe/841Zzif6tQaIdch/Jak9DJOsnG30=
+github.com/kerwood/crossplane-xrd-generator/resources/xdeployment v1.0.0 h1:pZ2sNNH7Yez7Tki1cbzorwPL5Fpk2HQ3f7v++UiAKAc=
+github.com/kerwood/crossplane-xrd-generator/resources/xdeployment v1.0.0/go.mod h1:gDhoWIf7vEjO4GWoAMx33BlbqTm0/X5AnpUr/OSsjFI=
+github.com/kerwood/crossplane-xrd-generator/resources/xexample v1.0.0 h1:WMJ415mIRm6kFYFk9abzQ5xcKWTwCK6u6xKLcKCjxEo=
+github.com/kerwood/crossplane-xrd-generator/resources/xexample v1.0.0/go.mod h1:t4hRxBI+4LmBNMi7kG01EzKbAldrWxARnPZUOIdQsGQ=
 github.com/kr/pretty v0.3.1 h1:flRD4NNwYAUpkphVc1HcthR4KEIFJ65n8Mw5qdRn3LE=
 github.com/kr/pretty v0.3.1/go.mod h1:hoEshYVHaxMs3cyo3Yncou5ZscifuDolrwPKZanG3xk=
 github.com/kr/text v0.2.0 h1:5Nx0Ya0ZqY2ygV366QzturHI13Jq95ApcVaJBhpS+AY=
