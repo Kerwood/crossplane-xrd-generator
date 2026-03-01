@@ -3,6 +3,7 @@ package generator
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime/debug"
 	"strings"
@@ -14,6 +15,27 @@ import (
 	"sigs.k8s.io/controller-tools/pkg/loader"
 	"sigs.k8s.io/controller-tools/pkg/markers"
 )
+
+// goModCache returns the Go module cache directory.
+//
+// It checks in order:
+//  1. The GOMODCACHE environment variable
+//  2. The output of "go env GOMODCACHE" — this handles non-standard Go
+//     installations where the cache is not under ~/go/pkg/mod
+//  3. A hardcoded fallback of ~/go/pkg/mod
+func goModCache() string {
+	if gomodcache := os.Getenv("GOMODCACHE"); gomodcache != "" {
+		return gomodcache
+	}
+
+	out, err := exec.Command("go", "env", "GOMODCACHE").Output()
+	if err == nil {
+		return strings.TrimSpace(string(out))
+	}
+
+	home, _ := os.UserHomeDir()
+	return filepath.Join(home, "go", "pkg", "mod")
+}
 
 // findModuleDir resolves the on-disk source directory for a given Go package path.
 //
@@ -31,10 +53,7 @@ import (
 //  3. go.mod require directives — for any remaining modules not matched by the
 //     above, the version is read from go.mod and the module cache path is
 //     constructed as $GOMODCACHE/<module>@<version>.
-//
-// The module cache defaults to $GOMODCACHE if set, otherwise ~/go/pkg/mod.
 func findModuleDir(packagePath string) (string, error) {
-	// First try build info for versioned modules
 	bi, ok := debug.ReadBuildInfo()
 	if ok {
 		for _, mod := range bi.Deps {
@@ -50,12 +69,7 @@ func findModuleDir(packagePath string) (string, error) {
 				return filepath.Join(absPath, subPath), nil
 			}
 			if mod.Version != "" && mod.Version != "(devel)" {
-				gomodcache := os.Getenv("GOMODCACHE")
-				if gomodcache == "" {
-					home, _ := os.UserHomeDir()
-					gomodcache = filepath.Join(home, "go", "pkg", "mod")
-				}
-				return filepath.Join(gomodcache, mod.Path+"@"+mod.Version), nil
+				return filepath.Join(goModCache(), mod.Path+"@"+mod.Version), nil
 			}
 		}
 	}
@@ -83,18 +97,12 @@ func findModuleDir(packagePath string) (string, error) {
 		return filepath.Join(absPath, subPath), nil
 	}
 
-	// Check require directives for module cache lookup
-	gomodcache := os.Getenv("GOMODCACHE")
-	if gomodcache == "" {
-		home, _ := os.UserHomeDir()
-		gomodcache = filepath.Join(home, "go", "pkg", "mod")
-	}
-
+	// Fall back to module cache lookup via require directives
 	for _, r := range mf.Require {
 		if !strings.HasPrefix(packagePath, r.Mod.Path) {
 			continue
 		}
-		return filepath.Join(gomodcache, r.Mod.Path+"@"+r.Mod.Version), nil
+		return filepath.Join(goModCache(), r.Mod.Path+"@"+r.Mod.Version), nil
 	}
 
 	return "", fmt.Errorf("could not find module directory for package %q", packagePath)
