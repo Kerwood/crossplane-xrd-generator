@@ -4,26 +4,28 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"reflect"
 
 	"github.com/kerwood/crossplane-xrd-generator/generator"
-	"github.com/kerwood/crossplane-xrd-generator/resources/xappregistration"
-	"github.com/kerwood/crossplane-xrd-generator/resources/xdeployment"
-	"xrd-example/resources/xexample"
 )
 
 var xResources = map[string]generator.ResourceMeta{
 	"xexample": {
-		Type:  reflect.TypeOf(xexample.XExample{}),
-		Group: "example.org",
+		PackagePath: "github.com/kerwood/crossplane-xrd-generator/cmd-example/resources/xexample",
+		TypeName:    "XExample",
+		Group:       "example.org",
+		Version:     "v1alpha1",
 	},
 	"xdeployment": {
-		Type:  reflect.TypeOf(xdeployment.XDeployment{}),
-		Group: "example.org",
+		PackagePath: "github.com/kerwood/crossplane-xrd-generator/resources/xdeployment",
+		TypeName:    "XDeployment",
+		Group:       "example.org",
+		Version:     "v1alpha1",
 	},
 	"xappregistration": {
-		Type:  reflect.TypeOf(xappregistration.XAppRegistration{}),
-		Group: "example.org",
+		PackagePath: "github.com/kerwood/crossplane-xrd-generator/resources/xappregistration",
+		TypeName:    "XAppRegistration",
+		Group:       "example.org",
+		Version:     "v1alpha1",
 	},
 }
 
@@ -45,14 +47,13 @@ func main() {
 
 	if *resource == "all" {
 		for _, v := range xResources {
-			printXRDs(v)
+			printXRD(v)
 			fmt.Println("---")
 		}
 	} else {
-		rType, ok := xResources[*resource]
+		meta, ok := xResources[*resource]
 		if !ok {
 			fmt.Printf("Error: resource '%s' not found\n", *resource)
-
 			fmt.Println()
 			fmt.Println("  Resources available:")
 			for k := range xResources {
@@ -60,19 +61,21 @@ func main() {
 			}
 			os.Exit(1)
 		}
-		printXRDs(rType)
+		printXRD(meta)
 	}
 }
 
-func printXRDs(resource generator.ResourceMeta) {
+func printXRD(resource generator.ResourceMeta) {
 	xrd, err := generator.BuildCompositeResourceDefinition(resource)
 	if err != nil {
-		panic(err)
+		fmt.Fprintf(os.Stderr, "Error building XRD: %v\n", err)
+		os.Exit(1)
 	}
 
 	out, err := generator.MarshalXRDToYAML(xrd)
 	if err != nil {
-		panic(err)
+		fmt.Fprintf(os.Stderr, "Error marshalling XRD: %v\n", err)
+		os.Exit(1)
 	}
 
 	os.Stdout.Write(out)
