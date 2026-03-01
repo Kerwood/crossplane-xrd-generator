@@ -3,13 +3,14 @@ module github.com/kerwood/crossplane-xrd-generator/cmd-example
 go 1.25.0
 
 require (
-	k8s.io/apimachinery v0.35.0
+	k8s.io/apimachinery v0.35.2
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
 
 require (
 	github.com/kerwood/crossplane-xrd-generator/generator v0.0.0-20260301090455-14f54c73f8ab
-	github.com/kerwood/crossplane-xrd-generator/resources v0.0.0-20260301090455-14f54c73f8ab
+	github.com/kerwood/crossplane-xrd-generator/resources/xappregistration v1.0.1
+	github.com/kerwood/crossplane-xrd-generator/resources/xdeployment v1.0.0
 )
 
 require (
