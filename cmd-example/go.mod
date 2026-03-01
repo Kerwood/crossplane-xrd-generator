@@ -8,7 +8,7 @@ require (
 )
 
 require (
-	github.com/kerwood/crossplane-xrd-generator/generator v0.0.0-20260301090455-14f54c73f8ab
+	github.com/kerwood/crossplane-xrd-generator/generator v1.0.0
 	github.com/kerwood/crossplane-xrd-generator/resources/xappregistration v1.0.1
 	github.com/kerwood/crossplane-xrd-generator/resources/xdeployment v1.0.0
 )
