@@ -69,7 +69,19 @@ func BuildCompositeResourceDefinition(resource ResourceMeta) (*apiextensionsv2.C
 		return nil, fmt.Errorf("no 'spec' field found in schema for %q", resource.TypeName)
 	}
 
-	rawSchema, err := json.Marshal(specSchema)
+	// Spec + Status fields must be nested under a "spec" property.
+	wrappedSchema := apiextv1.JSONSchemaProps{
+		Type: "object",
+		Properties: map[string]apiextv1.JSONSchemaProps{
+			"spec": specSchema,
+		},
+	}
+
+	if statusSchema, ok := schema.Properties["status"]; ok {
+		wrappedSchema.Properties["status"] = statusSchema
+	}
+
+	rawSchema, err := json.Marshal(wrappedSchema)
 	if err != nil {
 		return nil, err
 	}
